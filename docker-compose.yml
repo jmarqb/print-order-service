@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: print_order_reception_service
+    ports:
+      - '3001:3001'
+    depends_on:
+      - mongo
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
+    environment:
+      - JWT_SECRET=your_secret_json_web_token
+      - MONGO_HOST=mongodb://mongo:27017/print-order-reception-serviceDB
+      - TEST_MONGO_HOST=mongodb://mongo:27017/test-databaseprint-order-reception
+
+  mongo:
+    image: mongo:6.0.1
+    container_name: print_order_reception_service_mongodb_container
+    restart: unless-stopped
+    ports:
+      - '27018:27017'
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
