@@ -6,14 +6,13 @@ from fastapi import HTTPException, status
 from bson import ObjectId
 from database import database
 
-
 from models.print_request import (
     Passport,
     CardId,
     Accreditation,
-    PrintRequest,
     DocumentType,
 )
+from models.summary import RequestSummaryResponse
 
 
 async def get_print_requests(page: int, limit: int, owner: str):
@@ -54,7 +53,7 @@ async def cancel_print_request_by_id(id: str, owner: str):
 
 
 async def create_print_request(
-    document_type: str, metadata: dict[str, Any], owner: str
+        document_type: str, metadata: dict[str, Any], owner: str
 ) -> Any:
     now = datetime.now()
     reception_date = datetime(now.year, now.month, now.day)
@@ -88,10 +87,10 @@ async def create_print_request(
 
 
 async def update_by_id_and_document_type(
-    print_request_id: str,
-    data: Passport | Accreditation | CardId,
-    document_type: DocumentType,
-    owner: str,
+        print_request_id: str,
+        data: Passport | Accreditation | CardId,
+        document_type: DocumentType,
+        owner: str,
 ):
     print_request = await get_print_request(print_request_id, owner, document_type)
 
@@ -113,6 +112,7 @@ def generate_print_request_code(last_suffix: int):
         return prefix + str(last_suffix)
 
 
-async def get_requests_analytics_summary(owner: str) -> List[Any]:
+async def get_requests_analytics_summary(owner: str) -> RequestSummaryResponse:
     summary = await database.get_requests_analytics_summary(owner)
-    return summary[0]
+    result = summary[0] if summary.__len__() > 0 else RequestSummaryResponse(**{"client_app": str(owner)})
+    return result
