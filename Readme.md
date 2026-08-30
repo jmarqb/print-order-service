@@ -88,7 +88,7 @@ $ python -m venv venv
 
 # Activate the virtual environment
 # On Windows:
-$ venv\Scripts\activate
+$ .\venv\Scripts\activate
 # On macOS/Linux:
 $ source venv/bin/activate
 
@@ -149,7 +149,7 @@ in your virtual environment :
 ```
 # Activate the virtual environment
 # On Windows:
-$ venv\Scripts\activate
+$ .\venv\Scripts\activate
 # On macOS/Linux:
 $ source venv/bin/activate
 ```
