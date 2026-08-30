@@ -170,7 +170,7 @@ information about the workflow, endpoints, request/response models, and status c
 You can access the interactive documentation at:
 
 - **Swagger UI:** `http://127.0.0.1:3001/ms-print/api/docs`
-- **ReDoc:** `http://127.0.0.1:3001/ms-print/api/redoc`
+- **ReDoc:** `http://127.0.0.1:3001/ms-print/api/openapi.json`
 
 ---
 
