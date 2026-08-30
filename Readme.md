@@ -72,8 +72,8 @@ To install the API, follow these steps:
 
 ```bash
 # Clone the repository
-$ git clone https://github.com/jmarqb/Print-Order-Reception-Service.git
-$ cd Print-Order-Reception-Service
+$ git clone https://github.com/jmarqb/print-order-service.git
+$ cd print-order-service
 
 # Create a virtual environment
 $ python -m venv venv
