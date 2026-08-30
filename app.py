@@ -1,6 +1,5 @@
 from fastapi import Depends, FastAPI, APIRouter
 
-
 from config.config import Settings, initiate_database
 
 from routes.print_request import router as PrintRequestRouter
@@ -21,7 +20,6 @@ app = FastAPI(
     docs_url=root_path + "/docs",
     openapi_url=root_path + "/openapi.json",
 )
-
 
 app.include_router(router=temp, prefix=root_path)
 

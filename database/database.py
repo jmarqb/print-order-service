@@ -13,9 +13,9 @@ client_app_collection = ClientApp
 
 
 async def get_print_request_by_id(
-    print_request_id: str,
-    owner: PydanticObjectId,
-    document_type: str = None,
+        print_request_id: str,
+        owner: PydanticObjectId,
+        document_type: str = None,
 ) -> PrintRequest:
     filters = {
         "cancelled": False,
@@ -28,9 +28,8 @@ async def get_print_request_by_id(
 
 
 async def update_print_request(
-    print_request: PrintRequest, data: Passport | Accreditation | CardId
+        print_request: PrintRequest, data: Passport | Accreditation | CardId
 ) -> PrintRequest:
-
     return await print_request_collection.update(
         print_request, {"$set": {"metadata": data}}
     )
@@ -41,7 +40,7 @@ async def cancel_print_request(data: PrintRequest) -> None:
 
 
 async def retrieve_print_requests(
-    offset: int, limit: int, owner: str
+        offset: int, limit: int, owner: str
 ) -> List[PrintRequest]:
     filters = {"cancelled": False, "owner": PydanticObjectId(owner)}
     print_requests = (
@@ -51,7 +50,7 @@ async def retrieve_print_requests(
 
 
 async def retrieve_print_requests_unprocess(
-    owner: str, document_type: str
+        owner: str, document_type: str
 ) -> List[PrintRequest]:
     filters = {
         "cancelled": False,
@@ -63,7 +62,7 @@ async def retrieve_print_requests_unprocess(
 
 
 async def update_unprocess_requests_to_process(
-    ids_list: list[PydanticObjectId], order: Order
+        ids_list: list[PydanticObjectId], order: Order
 ):
     filters = {"_id": {"$in": ids_list}}
     await print_request_collection.find(filters).update_many(
@@ -78,7 +77,7 @@ async def count_print_requests(owner: str) -> int:
 
 
 async def get_print_requests_last_code(
-    document_type: str, owner: str
+        document_type: str, owner: str
 ) -> List[PrintRequest]:
     filters = {
         "cancelled": False,
@@ -132,7 +131,7 @@ async def count_print_orders(owner: str) -> int:
 
 
 async def get_orders_last_code(
-    document_type: str, owner: str, date: datetime
+        document_type: str, owner: str, date: datetime
 ) -> List[Order]:
     filters = {
         "print_requests_type": document_type,

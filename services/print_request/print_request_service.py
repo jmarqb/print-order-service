@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any
 from math import ceil
 from datetime import datetime
 from fastapi import HTTPException, status

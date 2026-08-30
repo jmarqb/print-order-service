@@ -1,5 +1,4 @@
 from fastapi import APIRouter, status
-from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, Field
 from models.client_app import ClientApp
 from services.auth import auth_service

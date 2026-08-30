@@ -24,7 +24,6 @@ async def get_current_client(token: Annotated[str, Depends(oauth2_scheme)]) -> d
 
 @router.post("/login")
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
-
     client = await auth_service.authenticate_client(
         form_data.username, form_data.password
     )
@@ -40,6 +39,6 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> T
 
 @router.get("/client/me/")
 async def read_client_me(
-    current_client: Annotated[Any, Depends(get_current_client)],
+        current_client: Annotated[Any, Depends(get_current_client)],
 ) -> Any:
     return current_client
