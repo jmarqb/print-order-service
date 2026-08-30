@@ -61,7 +61,7 @@ async def test_get_order_by_id_success(mock_get_order, test_client, get_order_fi
 
     mock_get_order.assert_awaited_once()
     args, _ = mock_get_order.call_args
-    assert args[0] == order_id
+    assert args[0] == str(order_id)
     assert str(args[1]) == MOCK_USER["id"]
 
     app.dependency_overrides.clear()
@@ -84,7 +84,7 @@ async def test_get_order_by_id_not_found(mock_get_order, test_client):
 
     mock_get_order.assert_awaited_once()
     args, _ = mock_get_order.call_args
-    assert args[0] == order_id
+    assert args[0] == str(order_id)
     assert str(args[1]) == MOCK_USER["id"]
 
     app.dependency_overrides.clear()
