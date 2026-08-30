@@ -1,5 +1,3 @@
-from typing import Any, Literal
-
 from bson import ObjectId
 from pydantic import BaseModel
 import pytest

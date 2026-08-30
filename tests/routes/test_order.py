@@ -6,11 +6,9 @@ from routes.auth import get_current_client
 from app import app
 from fastapi import HTTPException, exceptions
 
-# 1. Definimos un usuario falso para la inyección de dependencias
 MOCK_USER = {"id": str(ObjectId())}
 
 
-# 2. Función que reemplazará a 'get_current_client' durante los tests
 def override_get_current_client():
     return MOCK_USER
 
@@ -18,10 +16,8 @@ def override_get_current_client():
 @pytest.mark.asyncio
 @patch("routes.order.order_service.get_orders", new_callable=AsyncMock)
 async def test_get_orders_success(mock_get_orders, test_client, get_order_fixture):
-    # A. Sobrescribimos la dependencia de autenticación en FastAPI
     app.dependency_overrides[get_current_client] = override_get_current_client
 
-    # B. Definimos el objeto que simula devolver la capa de servicio
     mock_paginated_response = {
         "items": [
             get_order_fixture,
@@ -34,22 +30,17 @@ async def test_get_orders_success(mock_get_orders, test_client, get_order_fixtur
 
     mock_get_orders.return_value = mock_paginated_response
 
-    # C. Ejecutamos la petición HTTP GET pasando los query params
     response = test_client.get("/ms-print/api/v1/orders/?page=1&limit=10")
 
-    # D. Assertions
     assert response.status_code == 200
     assert response.json() == mock_paginated_response
 
-    # E. Verificamos que el servicio fue llamado con los tipos de datos correctos
-    # PydanticObjectId convierte la cadena a ObjectId, por lo que verificamos esa llamada
     mock_get_orders.assert_awaited_once()
     args, _ = mock_get_orders.call_args
-    assert args[0] == 1  # page
-    assert args[1] == 10  # limit
-    assert str(args[2]) == MOCK_USER["id"]  # owner (PydanticObjectId)
+    assert args[0] == 1
+    assert args[1] == 10
+    assert str(args[2]) == MOCK_USER["id"]
 
-    # F. Limpiamos el override de dependencias al terminar el test
     app.dependency_overrides.clear()
 
 
@@ -70,8 +61,8 @@ async def test_get_order_by_id_success(mock_get_order, test_client, get_order_fi
 
     mock_get_order.assert_awaited_once()
     args, _ = mock_get_order.call_args
-    assert args[0] == order_id  # order_id (PydanticObjectId)
-    assert str(args[1]) == MOCK_USER["id"]  # owner (PydanticObjectId)
+    assert args[0] == order_id
+    assert str(args[1]) == MOCK_USER["id"]
 
     app.dependency_overrides.clear()
 

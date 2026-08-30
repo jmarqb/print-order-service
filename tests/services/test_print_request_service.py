@@ -39,7 +39,7 @@ async def test_get_print_request(mock_request, get_print_request_fixture):
     new_callable=AsyncMock,
 )
 async def test_get_print_request_with_document_type(
-    mock_request, get_print_request_fixture
+        mock_request, get_print_request_fixture
 ):
     print_request_id = str(ObjectId())
     owner = str(ObjectId())
@@ -86,8 +86,8 @@ async def test_get_print_request_with_document_type_not_found(mock_request):
     mock_request.assert_called_once_with(print_request_id, owner, document_type)
     assert exec.value.status_code == 404
     assert (
-        exec.value.detail
-        == f"Print request with id {print_request_id} for document type {document_type} not found"
+            exec.value.detail
+            == f"Print request with id {print_request_id} for document type {document_type} not found"
     )
 
 
@@ -101,9 +101,8 @@ async def test_get_print_request_with_document_type_not_found(mock_request):
     new_callable=AsyncMock,
 )
 async def test_get_print_requests_paginated(
-    mock_retrieve_requests, mock_count_requests, get_print_request_fixture
+        mock_retrieve_requests, mock_count_requests, get_print_request_fixture
 ):
-
     owner = str(ObjectId())
     param_page = 0
     param_limit = 0
@@ -138,7 +137,7 @@ async def test_get_print_requests_paginated(
     new_callable=AsyncMock,
 )
 async def test_cancel_print_request(
-    mock_print_request, mock_cancel_print_request, get_print_request_fixture
+        mock_print_request, mock_cancel_print_request, get_print_request_fixture
 ):
     print_request_id = str(ObjectId())
     owner = str(ObjectId())
@@ -163,7 +162,7 @@ async def test_cancel_print_request(
     new_callable=AsyncMock,
 )
 async def test_update_by_id_and_document_type(
-    mock_print_request, mock_update_print_request, get_print_request_fixture
+        mock_print_request, mock_update_print_request, get_print_request_fixture
 ):
     print_request_id = str(ObjectId())
     owner = str(ObjectId())
@@ -256,9 +255,9 @@ async def test_get_requests_analytics_summary(mock_summary):
     new_callable=AsyncMock,
 )
 async def test_create_order_with_last_order(
-    mock_insert_print_request,
-    mock_get_last_print_request,
-    get_print_request_fixture,
+        mock_insert_print_request,
+        mock_get_last_print_request,
+        get_print_request_fixture,
 ):
     document_type = DocumentType.PASSPORT
     owner = str(ObjectId())
@@ -295,9 +294,9 @@ async def test_create_order_with_last_order(
     new_callable=AsyncMock,
 )
 async def test_create_order_without_last_order(
-    mock_insert_print_request,
-    mock_get_last_print_request,
-    get_print_request_fixture,
+        mock_insert_print_request,
+        mock_get_last_print_request,
+        get_print_request_fixture,
 ):
     document_type = DocumentType.PASSPORT
     owner = str(ObjectId())
@@ -327,7 +326,7 @@ async def test_create_order_without_last_order(
     new_callable=AsyncMock,
 )
 async def test_create_print_request_reaches_code_limit(
-    mock_get_last_print_request, get_print_request_fixture
+        mock_get_last_print_request, get_print_request_fixture
 ):
     document_type = DocumentType.PASSPORT
     owner = str(ObjectId())

@@ -63,7 +63,7 @@ async def test_register_already_exist_client(mock_create_client, test_client):
 async def test_register_error_invalid_body_url(mock_create_client, test_client):
     body = {
         "name": "test_client",
-        "url": 5,  # invalid value shoul be a string,
+        "url": 5,  # invalid value should be a string,
         "password": 123456,
     }
 

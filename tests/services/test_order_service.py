@@ -1,5 +1,4 @@
 from datetime import datetime
-import math
 from unittest.mock import AsyncMock, MagicMock, patch
 
 from bson import ObjectId
@@ -50,9 +49,8 @@ async def test_get_order_not_found(mock_order):
 )
 @patch("services.order.order_service.database.retrieve_orders", new_callable=AsyncMock)
 async def test_get_orders_paginated(
-    mock_retrieve_orders, mock_count_orders, get_order_fixture
+        mock_retrieve_orders, mock_count_orders, get_order_fixture
 ):
-
     owner = str(ObjectId())
     param_page = 0
     param_limit = 0
@@ -95,12 +93,12 @@ async def test_get_orders_paginated(
     new_callable=AsyncMock,
 )
 async def test_create_order_with_last_order(
-    mock_update_requests,
-    mock_insert_order,
-    mock_retrieve_requests,
-    mock_get_last_order,
-    get_order_fixture,
-    get_print_request_fixture,
+        mock_update_requests,
+        mock_insert_order,
+        mock_retrieve_requests,
+        mock_get_last_order,
+        get_order_fixture,
+        get_print_request_fixture,
 ):
     document_type = DocumentType.PASSPORT
     owner = str(ObjectId())
@@ -169,12 +167,12 @@ async def test_create_order_with_last_order(
     new_callable=AsyncMock,
 )
 async def test_create_order_without_last_order(
-    mock_update_requests,
-    mock_insert_order,
-    mock_retrieve_requests,
-    mock_get_last_order,
-    get_order_fixture,
-    get_print_request_fixture,
+        mock_update_requests,
+        mock_insert_order,
+        mock_retrieve_requests,
+        mock_get_last_order,
+        get_order_fixture,
+        get_print_request_fixture,
 ):
     document_type = DocumentType.PASSPORT
     owner = str(ObjectId())
@@ -228,9 +226,8 @@ async def test_create_order_without_last_order(
     new_callable=AsyncMock,
 )
 async def test_create_order_reaches_code_limit(
-    mock_get_last_order,
+        mock_get_last_order,
 ):
-
     document_type = DocumentType.PASSPORT
     owner = str(ObjectId())
 
@@ -262,10 +259,9 @@ async def test_create_order_reaches_code_limit(
     new_callable=AsyncMock,
 )
 async def test_create_order_without_print_requests(
-    mock_retrieve_requests,
-    mock_get_last_order,
+        mock_retrieve_requests,
+        mock_get_last_order,
 ):
-
     document_type = DocumentType.PASSPORT
     owner = str(ObjectId())
 
@@ -308,7 +304,6 @@ async def test_create_order_without_print_requests(
     ],
 )
 def test_get_value_from_last_code(code, expected):
-
     result = get_value_from_last_code(code)
 
     assert result == expected
@@ -323,10 +318,9 @@ def test_get_value_from_last_code(code, expected):
     ],
 )
 def test_generate_order_code_prefix(
-    document_type,
-    expected_prefix,
+        document_type,
+        expected_prefix,
 ):
-
     date = datetime(2026, 8, 27)
 
     result = generate_order_code(
@@ -352,10 +346,9 @@ def test_generate_order_code_prefix(
     ],
 )
 def test_generate_order_code_value_format(
-    value,
-    expected,
+        value,
+        expected,
 ):
-
     date = datetime(2026, 8, 27)
 
     result = generate_order_code(

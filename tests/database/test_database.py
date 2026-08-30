@@ -2,10 +2,8 @@ from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock, patch
 
 from bson import ObjectId
-from pymongo import UpdateMany
 import pytest
 
-from database.aggregations import request_summary_aggregation
 from database.database import (
     cancel_print_request,
     count_print_orders,
@@ -37,7 +35,6 @@ owner = str(ObjectId())
 @pytest.mark.asyncio
 @patch("database.database.print_request_collection.find_one", new_callable=AsyncMock)
 async def test_get_print_request_by_id(mock_print_request, get_print_request_fixture):
-
     mock_print_request.return_value = get_print_request_fixture
     result = await get_print_request_by_id(request_id, owner, None)
 
@@ -49,9 +46,8 @@ async def test_get_print_request_by_id(mock_print_request, get_print_request_fix
 @pytest.mark.asyncio
 @patch("database.database.print_request_collection.find_one", new_callable=AsyncMock)
 async def test_get_print_request_by_id_with_document_type(
-    mock_print_request, get_print_request_fixture
+        mock_print_request, get_print_request_fixture
 ):
-
     mock_print_request.return_value = get_print_request_fixture
     result = await get_print_request_by_id(request_id, owner, DocumentType.DNI)
 
@@ -181,7 +177,6 @@ async def test_update_unprocess_requests_to_process(mock_find, get_order_fixture
 @pytest.mark.asyncio
 @patch("database.database.print_request_collection.find")
 async def test_count_print_requests(mock_find):
-
     print_request = MagicMock(PrintRequest)
 
     list_requests_founded = [print_request, print_request]
@@ -199,7 +194,6 @@ async def test_count_print_requests(mock_find):
 @pytest.mark.asyncio
 @patch("database.database.print_request_collection.insert_one")
 async def test_insert_print_request(mock_insert_one, get_print_request_fixture):
-
     print_request = PrintRequest(**get_print_request_fixture)
     mock_insert_one.return_value = print_request
     result = await insert_print_request(get_print_request_fixture)
@@ -211,7 +205,6 @@ async def test_insert_print_request(mock_insert_one, get_print_request_fixture):
 @pytest.mark.asyncio
 @patch("database.database.client_app_collection.insert_one", new_callable=AsyncMock)
 async def test_insert_client_app(mock_insert_one, get_client_app_fixture):
-
     client_app = ClientApp(**get_client_app_fixture)
     mock_insert_one.return_value = client_app
     result = await insert_client_app(get_client_app_fixture)
@@ -223,7 +216,6 @@ async def test_insert_client_app(mock_insert_one, get_client_app_fixture):
 @pytest.mark.asyncio
 @patch("database.database.client_app_collection.find_one", new_callable=AsyncMock)
 async def test_exists_client_app(mock_find_one, get_client_app_fixture):
-
     client_name = str(get_client_app_fixture.get("name"))
     mock_find_one.return_value = get_client_app_fixture
 
@@ -236,7 +228,6 @@ async def test_exists_client_app(mock_find_one, get_client_app_fixture):
 @pytest.mark.asyncio
 @patch("database.database.client_app_collection.find_one", new_callable=AsyncMock)
 async def test_get_client_app(mock_find_one, get_client_app_fixture):
-
     client_name = str(get_client_app_fixture.get("name"))
     mock_find_one.return_value = get_client_app_fixture
 
@@ -249,7 +240,6 @@ async def test_get_client_app(mock_find_one, get_client_app_fixture):
 @pytest.mark.asyncio
 @patch("database.database.order_collection.find")
 async def test_count_print_orders(mock_find, get_order_fixture):
-
     order = MagicMock(Order)
 
     list_orders_founded = [order, order]
@@ -267,7 +257,6 @@ async def test_count_print_orders(mock_find, get_order_fixture):
 @pytest.mark.asyncio
 @patch("database.database.order_collection.find_one", new_callable=AsyncMock)
 async def test_get_order_by_id(mock_order, get_order_fixture):
-
     mock_order.return_value = get_order_fixture
     result = await get_order_by_id(request_id, owner)
 
@@ -279,7 +268,6 @@ async def test_get_order_by_id(mock_order, get_order_fixture):
 @pytest.mark.asyncio
 @patch("database.database.order_collection.insert_one", new_callable=AsyncMock)
 async def test_insert_order(mock_insert_one, get_order_fixture):
-
     order = Order(**get_order_fixture)
     mock_insert_one.return_value = order
     result = await insert_order(get_order_fixture)
@@ -288,32 +276,25 @@ async def test_insert_order(mock_insert_one, get_order_fixture):
     mock_insert_one.assert_awaited_once()
 
 
-# TODO: ESTUDIAR A DETALLE ESTA SECCION
 @pytest.mark.asyncio
 @patch("database.database.print_request_collection.aggregate")
 async def test_get_requests_analytics_summary_without_owner(mock_aggregate):
-    # Datos de prueba
     expected_result = [
         {"client_app": "Client1", "total_requests": 10, "processed": 7, "unprocess": 3},
         {"client_app": "Client2", "total_requests": 5, "processed": 2, "unprocess": 3},
     ]
 
-    # Configurar el cursor de agregación (mismo patrón que find)
     mock_cursor = MagicMock()
     mock_cursor.to_list = AsyncMock(return_value=expected_result)
     mock_aggregate.return_value = mock_cursor
 
-    # Ejecutar sin owner
     result = await get_requests_analytics_summary()
 
-    # Verificar resultado
     assert result == expected_result
 
-    # Verificar que aggregate fue llamado y obtener el pipeline usado
     mock_aggregate.assert_called_once()
     actual_pipeline = mock_aggregate.call_args[0][0]
 
-    # Verificar que el pipeline base NO tiene el $match de owner al inicio
     assert actual_pipeline[0] == {"$match": {"cancelled": False}}
     assert "$lookup" in actual_pipeline[1]
 
@@ -328,26 +309,19 @@ async def test_get_requests_analytics_summary_with_owner(mock_aggregate):
     mock_cursor.to_list = AsyncMock(return_value=expected_result)
     mock_aggregate.return_value = mock_cursor
 
-    # Ejecutar CON owner
     result = await get_requests_analytics_summary(owner=owner_id)
 
     assert result == expected_result
 
-    # Verificar que el pipeline tiene el $match de owner insertado al PRINCIPIO
     actual_pipeline = mock_aggregate.call_args[0][0]
 
-    # El primer elemento debe ser el $match de owner
     assert actual_pipeline[0] == {"$match": {"owner": ObjectId(owner_id)}}
-    # El segundo elemento es el $match original de cancelled
     assert actual_pipeline[1] == {"$match": {"cancelled": False}}
 
 
 @pytest.mark.asyncio
 @patch("database.database.print_request_collection.aggregate")
 async def test_get_requests_analytics_summary_pipeline_structure(mock_aggregate):
-    """
-    Test que verifica la estructura completa del pipeline generado.
-    """
     mock_cursor = MagicMock()
     mock_cursor.to_list = AsyncMock(return_value=[])
     mock_aggregate.return_value = mock_cursor
@@ -356,8 +330,7 @@ async def test_get_requests_analytics_summary_pipeline_structure(mock_aggregate)
 
     pipeline = mock_aggregate.call_args[0][0]
 
-    # Verificar etapas clave del pipeline
-    assert pipeline[0]["$match"]["owner"]  # Filtro de owner insertado
+    assert pipeline[0]["$match"]["owner"]
     assert pipeline[1]["$match"]["cancelled"] == False
     assert pipeline[2]["$lookup"]["from"] == "clientapps"
     assert pipeline[3]["$unwind"]["path"] == "$clients"
@@ -372,13 +345,11 @@ async def test_get_print_requests_last_code(mock_find):
     document_type = "PASSPORT"
     owner_id = "507f1f77bcf86cd799439011"
 
-    # Mock con código realista "S50" (el último/más alto)
     mock_request = MagicMock()
     mock_request.code = "S50"
     mock_request.document_type = document_type
     expected_result = [mock_request]
 
-    # Configurar mocks
     mock_cursor = MagicMock()
     mock_cursor.sort.return_value = mock_cursor
     mock_cursor.limit.return_value = mock_cursor
@@ -390,7 +361,6 @@ async def test_get_print_requests_last_code(mock_find):
     assert result == expected_result
     assert result[0].code == "S50"
 
-    # Verificar filtros
     mock_find.assert_called_once_with(
         {
             "cancelled": False,
@@ -400,11 +370,8 @@ async def test_get_print_requests_last_code(mock_find):
         }
     )
 
-    # Verificar que se ordena por código descendente
     mock_cursor.sort.assert_called_once()
     sort_arg = mock_cursor.sort.call_args[0][0]
-    # Si PrintRequest.code sobrecarga __neg__, verificar que es -PrintRequest.code
-    # o simplemente verificar que se llamó con el campo correcto
 
     mock_cursor.limit.assert_called_once_with(1)
 
@@ -412,7 +379,6 @@ async def test_get_print_requests_last_code(mock_find):
 @pytest.mark.asyncio
 @patch("database.database.print_request_collection.find")
 async def test_get_print_requests_last_code_returns_latest(mock_find):
-    """Test que verifica que devuelve el código más alto (S50 vs S01)"""
     owner_id = owner
 
     mock_request = MagicMock()
@@ -433,11 +399,10 @@ async def test_get_print_requests_last_code_returns_latest(mock_find):
 @pytest.mark.asyncio
 @patch("database.database.print_request_collection.find")
 async def test_get_print_requests_last_code_no_results(mock_find):
-    """Test cuando no hay solicitudes pendientes"""
     mock_cursor = MagicMock()
     mock_cursor.sort.return_value = mock_cursor
     mock_cursor.limit.return_value = mock_cursor
-    mock_cursor.to_list = AsyncMock(return_value=[])  # Sin resultados
+    mock_cursor.to_list = AsyncMock(return_value=[])
 
     mock_find.return_value = mock_cursor
 
@@ -449,34 +414,28 @@ async def test_get_print_requests_last_code_no_results(mock_find):
 @pytest.mark.asyncio
 @patch("database.database.order_collection.find")
 async def test_get_orders_last_code(mock_find):
-    # Datos de prueba
     document_type = "PASSPORT"
     owner_id = "507f1f77bcf86cd799439011"
     test_date = datetime(2026, 8, 22, 10, 30, 0)
 
-    # Mock con código realista "PSP20260822001" (el último sería "PSP20260822999")
     mock_order = MagicMock()
     mock_order.code = "PSP20260822999"  # El último código del día
     mock_order.print_requests_type = document_type
     mock_order.date = test_date
     expected_result = [mock_order]
 
-    # Configurar cadena de mocks
     mock_cursor = MagicMock()
-    mock_cursor.sort.return_value = mock_cursor  # sort() síncrono
-    mock_cursor.limit.return_value = mock_cursor  # limit() síncrono
+    mock_cursor.sort.return_value = mock_cursor
+    mock_cursor.limit.return_value = mock_cursor
     mock_cursor.to_list = AsyncMock(return_value=expected_result)
 
     mock_find.return_value = mock_cursor
 
-    # Ejecutar
     result = await get_orders_last_code(document_type, owner_id, test_date)
 
-    # Verificar resultado
     assert result == expected_result
     assert result[0].code == "PSP20260822999"
 
-    # Verificar filtros correctos
     expected_filters = {
         "print_requests_type": document_type,
         "owner": ObjectId(owner_id),
@@ -484,7 +443,6 @@ async def test_get_orders_last_code(mock_find):
     }
     mock_find.assert_called_once_with(expected_filters)
 
-    # Verificar ordenamiento descendente por code y limit(1)
     mock_cursor.sort.assert_called_once()
     mock_cursor.limit.assert_called_once_with(1)
     mock_cursor.to_list.assert_called_once()
@@ -493,11 +451,10 @@ async def test_get_orders_last_code(mock_find):
 @pytest.mark.asyncio
 @patch("database.database.order_collection.find")
 async def test_get_orders_last_code_first_code_of_day(mock_find):
-    """Test cuando es el primer código del día (001)"""
     test_date = datetime(2026, 8, 23)
 
     mock_order = MagicMock()
-    mock_order.code = "PSP20260823001"  # Primer código del día 23
+    mock_order.code = "PSP20260823001"
 
     mock_cursor = MagicMock()
     mock_cursor.sort.return_value = mock_cursor
@@ -513,7 +470,6 @@ async def test_get_orders_last_code_first_code_of_day(mock_find):
 @pytest.mark.asyncio
 @patch("database.database.order_collection.find")
 async def test_get_orders_last_code_no_orders(mock_find):
-    """Test cuando no hay órdenes para esa fecha/tipo/owner"""
     mock_cursor = MagicMock()
     mock_cursor.sort.return_value = mock_cursor
     mock_cursor.limit.return_value = mock_cursor

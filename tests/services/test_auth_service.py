@@ -2,7 +2,6 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 from bson import ObjectId
 from fastapi import HTTPException
-from pwdlib import PasswordHash
 import pytest
 
 from models.client_app import ClientApp
@@ -19,7 +18,6 @@ from services.auth.auth_service import (
 @patch("services.auth.auth_service.database.insert_client_app", new_callable=AsyncMock)
 @patch("services.auth.auth_service.database.exists_client_app", new_callable=AsyncMock)
 async def test_save_client_if_not_exist(mock_exist_client, mock_created_client):
-
     mock_exist_client.return_value = False
 
     mock_response = {
@@ -43,11 +41,9 @@ async def test_save_client_if_not_exist(mock_exist_client, mock_created_client):
 @pytest.mark.asyncio
 @patch("services.auth.auth_service.database.exists_client_app", new_callable=AsyncMock)
 async def test_save_client_raise_already_exist_client(mock_exist_client):
-
     mock_exist_client.return_value = True
 
     with pytest.raises(HTTPException) as exc_info:
-
         await save_client("client-name", "client-url", "any-password")
 
     assert exc_info.value.status_code == 400
@@ -60,7 +56,6 @@ async def test_save_client_raise_already_exist_client(mock_exist_client):
 @patch("services.auth.auth_service.verify_password", return_value=bool)
 @patch("services.auth.auth_service.database.get_client_app", new_callable=AsyncMock)
 async def test_authenticate_client(mock_returned_client, mock_verify_password):
-
     client = MagicMock(ClientApp)
 
     mock_returned_client.return_value = client
@@ -78,9 +73,8 @@ async def test_authenticate_client(mock_returned_client, mock_verify_password):
 @patch("services.auth.auth_service.verify_password", return_value=bool)
 @patch("services.auth.auth_service.database.get_client_app", new_callable=AsyncMock)
 async def test_authenticate_client_invalid_password(
-    mock_returned_client, mock_verify_password
+        mock_returned_client, mock_verify_password
 ):
-
     client = MagicMock(ClientApp)
 
     mock_returned_client.return_value = client
@@ -98,9 +92,8 @@ async def test_authenticate_client_invalid_password(
 @patch("services.auth.auth_service.verify_password", return_value=bool)
 @patch("services.auth.auth_service.database.get_client_app", new_callable=AsyncMock)
 async def test_authenticate_client_non_exist_client(
-    mock_returned_client, mock_verify_password
+        mock_returned_client, mock_verify_password
 ):
-
     client = None
 
     mock_returned_client.return_value = client
@@ -153,9 +146,7 @@ def test_validate_token(jwt_decode):
 
 
 def test_validate_token_invalid():
-
     with pytest.raises(HTTPException) as exc_info:
-
         validate_token("any-token")
 
     assert exc_info.value.status_code == 401

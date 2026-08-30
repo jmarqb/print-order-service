@@ -4,7 +4,6 @@ from fastapi.testclient import TestClient
 import pytest_asyncio
 from app import app
 from config.config import initiate_database
-from motor.motor_asyncio import AsyncIOMotorClient
 
 
 @pytest.fixture(scope="module")

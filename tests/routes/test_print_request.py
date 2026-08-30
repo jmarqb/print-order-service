@@ -5,7 +5,7 @@ from models.order import DocumentType
 from models.print_request import Passport
 from routes.auth import get_current_client
 from app import app
-from fastapi import HTTPException, exceptions
+from fastapi import HTTPException
 
 MOCK_USER = {"id": str(ObjectId())}
 
@@ -20,7 +20,7 @@ def override_get_current_client():
     new_callable=AsyncMock,
 )
 async def test_get_print_requests_success(
-    mock_get_requests, get_print_request_fixture, test_client
+        mock_get_requests, get_print_request_fixture, test_client
 ):
     app.dependency_overrides[get_current_client] = override_get_current_client
 
@@ -56,7 +56,7 @@ async def test_get_print_requests_success(
     new_callable=AsyncMock,
 )
 async def test_get_request_by_id_success(
-    mock_get_request, get_print_request_fixture, test_client
+        mock_get_request, get_print_request_fixture, test_client
 ):
     app.dependency_overrides[get_current_client] = override_get_current_client
 
@@ -132,7 +132,7 @@ async def test_get_request_by_invalid_id(mock_get_request, test_client):
     new_callable=AsyncMock,
 )
 async def test_create_order_success(
-    mock_create_request, get_print_request_fixture, test_client
+        mock_create_request, get_print_request_fixture, test_client
 ):
     app.dependency_overrides[get_current_client] = override_get_current_client
 
@@ -244,7 +244,7 @@ async def test_cancel_request_not_found(mock_get_request, test_client):
     new_callable=AsyncMock,
 )
 async def test_update_request_type_passport(
-    mock_request, get_print_request_fixture, test_client
+        mock_request, get_print_request_fixture, test_client
 ):
     app.dependency_overrides[get_current_client] = override_get_current_client
 
