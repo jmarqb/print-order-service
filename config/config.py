@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     APP_JWT_SECRET: str = "secret"
     ALGORITHM: str = "HS256"
 
-    APP_PORT: Optional[int] = 8080
+    APP_PORT: Optional[int] = 3001
 
     DEBUG: bool = True
 
@@ -30,10 +30,6 @@ async def initiate_database(stage: str = None):
     settings = Settings()
     db_url = settings.TEST_MONGO_HOST if stage == "test" else settings.MONGO_HOST
 
-    # await init_beanie(
-    #     connection_string=db_url,
-    #     document_models=models.__all__,
-    # )
     client = AsyncIOMotorClient(host=db_url)
 
     await init_beanie(connection_string=db_url, document_models=models.__all__)
