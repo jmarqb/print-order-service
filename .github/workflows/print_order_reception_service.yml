@@ -17,6 +17,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      mongo:
+        image: mongo:6.0.1
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand(\"ping\").ok'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     env:
       PYTHONUNBUFFERED: 1
       ENVIRONMENT: test
@@ -41,12 +52,25 @@ jobs:
           echo "TEST_MONGO_HOST=mongodb://localhost:27017/ms-print-orders-test" >> .env
           echo "APP_JWT_SECRET=testsecret_github_actions" >> .env
           echo "SENTRY_DSN='https://examplePublicKey@o0.ingest.sentry.io/0'" >> .env
+          echo "ENV=test" >> .env
 
+      - name: Wait for MongoDB to be ready
+        run: |
+          for i in {1..30}; do
+            if docker exec ${{ job.services.mongo.id }} mongosh --eval "db.runCommand('ping').ok" | grep -q 1; then
+              echo "✅ MongoDB is ready!"
+              exit 0
+            fi
+            echo "⏳ Waiting for MongoDB... ($i/30)"
+            sleep 2
+          done
+          echo "❌ MongoDB failed to start"
+          exit 1
 
       - name: Run tests with coverage
         run: |
           mkdir -p reports
-          pytest --junitxml=reports/pytest.xml --cov=app --cov-report=xml --cov-report=term
+          pytest --junitxml=reports/pytest.xml --cov=. /tests --cov-report=xml --cov-report=term
 
       - name: Pytest Coverage & Test Report
         if: github.event_name == 'pull_request'
