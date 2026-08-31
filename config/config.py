@@ -17,7 +17,12 @@ class Settings(BaseSettings):
 
     APP_PORT: Optional[int] = 3001
 
+    # sentry
+    SENTRY_DSN: Optional[str] = None
+
     DEBUG: bool = True
+
+    ENV: str = "staging"
 
     MS_ROOT_PATH: str = "/ms-print/api"
 

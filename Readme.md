@@ -51,6 +51,7 @@ Core technologies and tools used in this project:
 - **Pytest, pytest-asyncio & pytest-cov:** Asynchronous testing framework with code coverage reporting.
 - **Python-dotenv:** Environment variable management for local development.
 - **Docker:** Containerization for consistent and reproducible deployment.
+- **Sentry:** Error monitoring, performance tracking, and alerting.
 
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
@@ -59,6 +60,7 @@ Core technologies and tools used in this project:
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Pytest](https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)
+![Sentry](https://img.shields.io/badge/Sentry-362D59?style=for-the-badge&logo=sentry&logoColor=white)
 
 ### Prerequisites
 
