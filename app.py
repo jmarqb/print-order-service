@@ -1,4 +1,7 @@
+import sentry_sdk
 from fastapi import Depends, FastAPI, APIRouter
+from sentry_sdk.integrations.fastapi import FastApiIntegration
+from sentry_sdk.integrations.starlette import StarletteIntegration
 
 from config.config import Settings, initiate_database
 
@@ -12,6 +15,26 @@ from routes.auth import get_current_client
 root_path = Settings().MS_ROOT_PATH
 
 temp = APIRouter()
+
+if Settings().ENV == "staging" or Settings().ENV == "production":
+    sentry_sdk.init(
+        dsn=Settings().SENTRY_DSN,
+        environment=Settings().ENV,
+        traces_sample_rate=1.0,
+        profiles_sample_rate=1.0,
+        integrations=[
+            StarletteIntegration(
+                transaction_style='endpoint',
+                failed_request_status_codes={403, 401, *range(500, 599)},
+                http_methods_to_capture=("GET", "POST", "PUT", "DELETE"),
+            ),
+            FastApiIntegration(
+                transaction_style='endpoint',
+                failed_request_status_codes={403, 401, *range(500, 599)},
+                http_methods_to_capture=("GET", "POST", "PUT", "DELETE"),
+            )
+        ]
+    )
 
 app = FastAPI(
     title="Print Order Reception Service",
