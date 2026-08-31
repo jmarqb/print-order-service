@@ -14,10 +14,7 @@ def test_client():
 
 @pytest_asyncio.fixture(autouse=True)
 async def init_db():
-    client = await initiate_database(stage="test")
-    pytest.motor_client = client
-    pytest.db = client.get_default_database()
-    await client.drop_database(client.get_default_database())
+    await initiate_database(stage="test")
 
 
 @pytest.fixture
