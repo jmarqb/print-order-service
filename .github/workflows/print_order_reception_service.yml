@@ -37,6 +37,7 @@ jobs:
       - name: Create temporary .env
         run: |
           echo "APP_PORT=3001" >> .env
+          echo "MONGO_HOST=mongodb://localhost:27017/ms-print-orders-test" >> .env
           echo "TEST_MONGO_HOST=mongodb://localhost:27017/ms-print-orders-test" >> .env
           echo "APP_JWT_SECRET=testsecret_github_actions" >> .env
           echo "SENTRY_DSN='https://examplePublicKey@o0.ingest.sentry.io/0'" >> .env
