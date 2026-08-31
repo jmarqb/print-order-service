@@ -70,7 +70,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           mkdir -p reports
-          pytest --junitxml=reports/pytest.xml --cov=. /tests --cov-report=xml --cov-report=term
+          pytest --junitxml=reports/pytest.xml --cov=. --cov-report=xml --cov-report=term
 
       - name: Pytest Coverage & Test Report
         if: github.event_name == 'pull_request'
