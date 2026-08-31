@@ -1,7 +1,6 @@
 from typing import Optional
 
 from beanie import init_beanie
-from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
 from pydantic_settings import BaseSettings
 
@@ -35,8 +34,4 @@ async def initiate_database(stage: str = None):
     settings = Settings()
     db_url = settings.TEST_MONGO_HOST if stage == "test" else settings.MONGO_HOST
 
-    client = AsyncIOMotorClient(host=db_url)
-
     await init_beanie(connection_string=db_url, document_models=models.__all__)
-
-    return client
