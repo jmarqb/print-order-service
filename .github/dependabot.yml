@@ -4,11 +4,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    versioning-strategy: widen
     commit-message:
       prefix: "deps(pip)"
       include: "scope"
-
 
   - package-ecosystem: "github-actions"
     directory: "/"
