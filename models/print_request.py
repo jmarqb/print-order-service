@@ -1,51 +1,10 @@
 from typing import Optional, Any
-from enum import Enum
 from datetime import datetime
 
 from beanie import Document, PydanticObjectId
 from pydantic import BaseModel
 
-
-class DocumentType(str, Enum):
-    PASSPORT = "PASSPORT"
-    DNI = "DNI"
-    ACCREDITATION = "ACCREDITATION"
-
-
-class Address(BaseModel):
-    main_street: str
-    between_streets: str
-    number: int
-    municipality: str
-    state: str
-
-
-class AccreditationPeriod(BaseModel):
-    start_date: datetime
-    end_date: datetime
-
-
-class Passport(BaseModel):
-    number: str
-    person_name: str
-    city_birth: str
-    country_birth: str
-
-
-class CardId(BaseModel):
-    number: str
-    person_name: str
-    address: Address
-    volume: int
-    folio: int
-
-
-class Accreditation(BaseModel):
-    number: str
-    person_name: str
-    origin_country: str
-    accreditation_period: AccreditationPeriod
-    responsability: str
+from schemas import Passport, CardId, Accreditation, DocumentType
 
 
 class PrintRequest(Document):

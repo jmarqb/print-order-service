@@ -1,20 +1,15 @@
 from bson import ObjectId
-from pydantic import BaseModel
 import pytest
 from unittest.mock import AsyncMock, patch
 from routes.auth import get_current_client
 from app import app
+from schemas import Token
 
 MOCK_USER = {"id": str(ObjectId())}
 
 
 def override_get_current_client():
     return MOCK_USER
-
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
 
 
 @pytest.mark.asyncio

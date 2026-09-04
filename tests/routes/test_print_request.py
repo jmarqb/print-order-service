@@ -1,11 +1,11 @@
 import pytest
 from unittest.mock import AsyncMock, patch
 from bson import ObjectId
-from models.order import DocumentType
-from models.print_request import Passport
 from routes.auth import get_current_client
 from app import app
 from fastapi import HTTPException
+
+from schemas import Passport, DocumentType
 
 MOCK_USER = {"id": str(ObjectId())}
 

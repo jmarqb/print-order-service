@@ -26,7 +26,8 @@ from database.database import (
 )
 from models.client_app import ClientApp
 from models.order import Order
-from models.print_request import DocumentType, PrintRequest
+from models.print_request import PrintRequest
+from schemas.document_type import DocumentType
 
 request_id = str(ObjectId())
 owner = str(ObjectId())

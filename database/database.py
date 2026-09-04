@@ -5,7 +5,7 @@ from beanie import PydanticObjectId
 
 from database.aggregations import request_summary_aggregation
 from models import PrintRequest, Order, ClientApp
-from models.print_request import Accreditation, Passport, CardId
+from schemas import Passport, Accreditation, CardId
 
 print_request_collection = PrintRequest
 order_collection = Order

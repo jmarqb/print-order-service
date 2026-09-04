@@ -5,8 +5,8 @@ from bson import ObjectId
 from fastapi import HTTPException
 import pytest
 
-from models.order import DocumentType
 from models.print_request import PrintRequest
+from schemas import DocumentType
 from services.order.order_service import (
     create_order,
     generate_order_code,

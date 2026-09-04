@@ -1,15 +1,9 @@
 from typing import Any, Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from pydantic import BaseModel
 from config.config import Settings
+from schemas import Token
 from services.auth import auth_service
-
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
 
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl=f"{Settings().MS_ROOT_PATH}/v1/auth/login"
