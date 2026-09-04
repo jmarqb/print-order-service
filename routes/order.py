@@ -3,7 +3,8 @@ from typing import List
 from beanie import PydanticObjectId
 from pydantic import BaseModel
 from fastapi import APIRouter, Depends, Query, status
-from models.order import DocumentType, Order
+from models.order import Order
+from schemas.document_type import DocumentType
 from services.order import order_service
 from routes.auth import get_current_client
 

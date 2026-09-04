@@ -4,8 +4,8 @@ from bson import ObjectId
 from fastapi import HTTPException
 import pytest
 
-from models.order import DocumentType
 from models.print_request import CardId
+from schemas.document_type import DocumentType
 from services.print_request.print_request_service import (
     cancel_print_request_by_id,
     create_print_request,

@@ -10,9 +10,9 @@ from models.print_request import (
     Passport,
     CardId,
     Accreditation,
-    DocumentType,
 )
-from models.summary import RequestSummaryResponse
+from schemas.summary import RequestSummaryResponse
+from schemas.document_type import DocumentType
 
 
 async def get_print_requests(page: int, limit: int, owner: str):

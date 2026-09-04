@@ -4,9 +4,9 @@ from beanie import PydanticObjectId
 from pydantic import BaseModel, model_validator
 
 from routes.auth import get_current_client
+from schemas.document_type import DocumentType
 from services.print_request import print_request_service
 from models.print_request import (
-    DocumentType,
     Passport,
     CardId,
     Accreditation,

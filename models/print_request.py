@@ -1,15 +1,10 @@
 from typing import Optional, Any
-from enum import Enum
 from datetime import datetime
 
 from beanie import Document, PydanticObjectId
 from pydantic import BaseModel
 
-
-class DocumentType(str, Enum):
-    PASSPORT = "PASSPORT"
-    DNI = "DNI"
-    ACCREDITATION = "ACCREDITATION"
+from schemas.document_type import DocumentType
 
 
 class Address(BaseModel):
