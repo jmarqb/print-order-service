@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status
 
-from models.summary import RequestSummaryResponse
+from schemas.summary import RequestSummaryResponse
 from routes.auth import get_current_client
 from services.print_request import print_request_service
 
