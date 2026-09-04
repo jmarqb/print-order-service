@@ -6,7 +6,7 @@ from fastapi import HTTPException
 import pytest
 
 from models.print_request import PrintRequest
-from schemas.document_type import DocumentType
+from schemas import DocumentType
 from services.order.order_service import (
     create_order,
     generate_order_code,

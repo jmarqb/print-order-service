@@ -6,7 +6,7 @@ from bson import ObjectId
 from fastapi import HTTPException, status
 from database import database
 from models.order import Order
-from schemas.document_type import DocumentType
+from schemas import DocumentType
 
 
 async def get_orders(page: int, limit: int, owner: str):

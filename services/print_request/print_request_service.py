@@ -5,14 +5,7 @@ from fastapi import HTTPException, status
 
 from bson import ObjectId
 from database import database
-
-from models.print_request import (
-    Passport,
-    CardId,
-    Accreditation,
-)
-from schemas.summary import RequestSummaryResponse
-from schemas.document_type import DocumentType
+from schemas import Passport, Accreditation, CardId, DocumentType, RequestSummaryResponse
 
 
 async def get_print_requests(page: int, limit: int, owner: str):

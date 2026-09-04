@@ -4,12 +4,9 @@ from beanie import PydanticObjectId
 from pydantic import BaseModel, model_validator
 
 from routes.auth import get_current_client
-from schemas.document_type import DocumentType
+from schemas import Passport, CardId, Accreditation, PaginatedResponse, DocumentType
 from services.print_request import print_request_service
 from models.print_request import (
-    Passport,
-    CardId,
-    Accreditation,
     PrintRequest,
 )
 
@@ -31,13 +28,6 @@ class CreatePrintRequest(BaseModel):
         elif doc_type == DocumentType.ACCREDITATION:
             values["metadata"] = Accreditation.model_validate(raw_metadata)
         return values
-
-
-class PaginatedResponse(BaseModel):
-    items: List[PrintRequest]
-    total: int
-    current_page: int
-    total_pages: int
 
 
 router = APIRouter(prefix="/v1/requests")
